@@ -70,8 +70,11 @@ class Registry(object):
             raise RuntimeError(msg)
         dbapi = Registry.DBPOOL.dbapi
         if dbapi.__name__ == "MySQLdb":
-            from twistar.dbconfig.mysql import MySQLDBConfig
+            from twistar.dbconfig.maria_mysql import MySQLDBConfig
             Registry.IMPL = MySQLDBConfig()
+        elif dbapi.__name__ in ('mysql', 'mysql.connector'):
+            from twistar.dbconfig.oracle_mysql import MysqlDBConfig
+            Registry.IMPL = MysqlDBConfig()
         elif dbapi.__name__ == "sqlite3":
             from twistar.dbconfig.sqlite import SQLiteDBConfig
             Registry.IMPL = SQLiteDBConfig()
